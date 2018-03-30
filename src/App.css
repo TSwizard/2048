@@ -1,0 +1,178 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.center-wrap {
+  justify-content: center;
+  padding: 15px 0;
+}
+
+.board {
+  background: #4e4343;
+  border-radius: 4px;
+  margin: 0 auto;
+  padding: 5px;
+  position: relative;
+  width: 400px;
+}
+
+.board .row {
+  margin: 0;
+}
+
+.game-cell {
+  height: 100px;
+  line-height: 80px;
+  padding: 5px;
+  width: 60px;
+}
+.game-cell::after {
+  background: #cec1b5;
+  border-radius: 4px;
+  content: "";
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.overlay {
+  height: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+}
+
+
+.overlay .game-cell {
+  position: absolute;
+  transition: all .4s ease-in;
+  width: 100px
+}
+
+.overlay .game-cell::after {
+  background: #3c3a32;
+  content: attr(value);
+  color: #f9f6f2;
+}
+
+
+.x1 {
+  left: 4px;
+}
+
+.x2 {
+  left: 101px;
+}
+.x3 {
+  left: 198px;
+}
+.x4 {
+  left: 296px;
+}
+
+.y1 {
+  top: 5px;
+}
+
+.y2 {
+  top: 105px;
+}
+
+.y3 {
+  top: 205px;
+}
+
+.y4 {
+  top: 305px;
+}
+
+
+.game-cell.d1,
+.game-cell.d2,
+.game-cell.d3 {
+  font-size: 40px;
+}
+
+.game-cell.d4 {
+  font-size: 32px;
+}
+
+.game-cell.d5 {
+  font-size: 28px;
+}
+
+.game-cell[value="2"]::after {
+  background: #eee4da;
+  color: #776e65
+}
+
+.game-cell[value="4"]::after {
+  background: #ede0c8;
+  color: #776e65
+}
+
+.game-cell[value="8"]::after {
+  color: #f9f6f2;
+  background: #f2b179;
+}
+
+.game-cell[value="16"]::after {
+  color: #f9f6f2;
+  background: #f59563;
+}
+
+.game-cell[value="32"]::after {
+  color: #f9f6f2;
+  background: #f67c5f;
+}
+
+.game-cell[value="64"]::after {
+  color: #f9f6f2;
+  background: #f65e3b;
+}
+
+.game-cell[value="128"]::after {
+  color: #f9f6f2;
+  background: #edcf72;
+}
+
+.game-cell[value="256"]::after {
+  color: #f9f6f2;
+  background: #edcc61;
+}
+
+.game-cell[value="512"]::after {
+  color: #f9f6f2;
+  background: #edc850;
+}
+
+.game-cell[value="1024"]::after {
+  color: #f9f6f2;
+  background: #edc53f;
+}
+
+.game-cell[value="2048"]::after {
+  color: #f9f6f2;
+  background: #edc22e;
+}
