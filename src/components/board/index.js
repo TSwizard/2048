@@ -1,45 +1,59 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import Cell from '../cell'
 
-const Board = ({boardModel}) => {
-    return (
-        <div className="board">
-            <div className="row">
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-            </div>
-            <div className="row">
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-            </div>
-            <div className="row">
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-            </div>
-            <div className="row">
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-                <div className="col-sm-3 game-cell"></div>
-            </div>
+class Board extends Component {
+    constructor(props) {
+        super(props)
 
-            <div className="overlay col-sm-12">
-                {
-                    boardModel.map((item, x) => (
-                        item.map((cell, y) => (cell > 0 ? <Cell key={y} x={x} y={y} value={cell} /> : ''))
-                    ))
-                }
+        this.state = {
+            boardModel: this.props.boardModel
+        }
+    }
+    render() {
+        const boardModel = this.props.boardModel;
+
+        const cells = this.props.cells;
+        return (
+            <div className="board">
+                <div className="row">
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                </div>
+                <div className="row">
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                </div>
+                <div className="row">
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                </div>
+                <div className="row">
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                    <div className="col-sm-3 game-cell"></div>
+                </div>
+    
+                <div className="overlay col-sm-12">
+                    {cells.map((cell, i) => <Cell 
+                                                key={cell.id}
+                                                x={cell.x}
+                                                y={cell.y}
+                                                value={cell.value}
+                                                isNew={cell.isNew}
+                                            />)}
+                </div>
             </div>
-        </div>
-            
-    );
+                
+        );
+    }
 }
 
 export default Board;

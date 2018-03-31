@@ -5,6 +5,7 @@ class Game extends Component {
     cellsPerTurn = 1;//Потом для уровней сложности допилить механизм изменения;
     score = 0;
     moves = 0;
+    cells = [];
     constructor() {
         super();
 
@@ -20,6 +21,7 @@ class Game extends Component {
         this.state = {
             score: 0,
             moves: 0,
+            cells: this.cells,
             boardModel: [
                 [0, 0, 0, 0],
                 [0, 0, 0, 0],
@@ -58,13 +60,15 @@ class Game extends Component {
     }
 
     bordClear = () => {
+        this.cells = [];
         return this.setState({
             boardModel: [
                 [0, 0, 0, 0],
                 [0, 0, 0, 0],
                 [0, 0, 0, 0],
                 [0, 0, 0, 0]
-            ]
+            ],
+            cells: this.cells
         });
     }
 
@@ -72,12 +76,13 @@ class Game extends Component {
         this.score = 0;
         this.moves = 0;
         this.bordClear()
-            .then(this.generateCells.bind(null, this.cellsPerTurn))
+            .then(this.generateCells.bind(null, this.cellsPerTurn + 1))
+
+        window.game = this;
         
     }
 
     makeMove = direction => {
-        debugger
         const maps = {
             left: (col, i, arr) => [arr[0][i], arr[1][i], arr[2][i], arr[3][i]],
             right: (col, i, arr) => [arr[3][i], arr[2][i], arr[1][i], arr[0][i]],
@@ -93,24 +98,39 @@ class Game extends Component {
         };
 
         const rows = this.state.boardModel.map(maps[direction]);
-        console.log(rows);
         rows.forEach(row => {
             row.sort(this.sort);
             this.mergeRow(row).sort(this.sort);
         });
         
         const newBoard = rows.map(reverseMaps[direction]);
-        console.log(this.state.boardModel);
-        console.log(newBoard);
+        newBoard.forEach((row, x) => {
+            row.forEach((cell, y) => {
+                if (cell === 0) return;
+                cell.x = x;
+                cell.y = y;
+                cell.isNew = false;
+            })
+        });
+
         this.moves += 1;
         this.setState({
             score: this.score,
             moves: this.moves,
-            boardModel: newBoard
-        }).then(this.generateCells.bind(null, this.cellsPerTurn))
+            boardModel: newBoard,
+            cells: this.cells
+        })
+        .then(() => {
+            setTimeout(() => {
+                this.generateCells(this.cellsPerTurn)
+            }, 200) 
+        })
+
     }
 
-    sort = (a,b) => {
+    sort = (left,right) => {
+        const a = left.value || left;
+        const b = right.value || right;
         if (a > 0 && b > 0) {
             return 0;
         }
@@ -121,11 +141,16 @@ class Game extends Component {
     mergeRow = arr => {
         for (let i in arr) {
             const next = +i + 1;
+            if (arr[i] && arr[next]) {
+                if (arr[i].value === arr[next].value) {
+                    const sum = arr[i].value + arr[next].value;
+                    const cellIndex = this.cells.indexOf(arr[i]);
+                    arr[next].value = sum;
+                    [arr[i], arr[next]] = [arr[next], 0];
 
-            if (arr[i] === arr[next]) {
-                const sum = arr[i] + arr[next];
-                [arr[i], arr[next]] = [sum, 0];
-                this.score += sum;
+                    this.cells.splice(cellIndex, 1);
+                    this.score += sum;
+                }
             }
         }
 
@@ -148,7 +173,7 @@ class Game extends Component {
         });
     }
 
-    isGameFinished = () => this.getFreeCells() < this.cellsPerTurn;
+    isGameFinished = () => this.cells.length > (16 - this.cellsPerTurn)//this.getFreeCells() < this.cellsPerTurn;
 
     insertCell = (board) => {
         let newBoard = [ //clone the board
@@ -161,7 +186,17 @@ class Game extends Component {
         let y = Math.floor(Math.random() * 4);
         const isCellFree = newBoard[x][y] === 0;
         if (isCellFree) {
-            newBoard[x][y] = 2;
+            const square = {
+                id: new Date().getTime(),
+                value: 2,
+                isNew: true,
+                x,
+                y
+            }
+
+            newBoard[x][y] = square;
+
+            this.cells.push(square);
         } else {
             newBoard = this.insertCell(newBoard);
         }
@@ -187,7 +222,7 @@ class Game extends Component {
                     </div>
                 </div>
 
-                <Board boardModel={boardModel} />
+                <Board boardModel={boardModel} cells={this.state.cells} />
             </div>
         );
     }
