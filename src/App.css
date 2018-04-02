@@ -191,11 +191,41 @@
   background: #edc22e;
 }
 
+.game-cell:not(.new).odd {
+  animation: merge .2s .1s;
+}
+.game-cell:not(.new).even {
+  animation: merge2 .2s .1s;
+}
+
 @keyframes show {
   0% {
     transform: scale(0)
   }
   100% {
     transform: scale(1)
+  }
+}
+
+@keyframes merge {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes merge2 {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }

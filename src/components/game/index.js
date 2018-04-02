@@ -157,7 +157,6 @@ class Game extends Component {
                 if (cell === 0) return;
                 cell.x = x;
                 cell.y = y;
-                cell.isNew = false;
             })
         });
 
@@ -207,6 +206,7 @@ class Game extends Component {
                     const sum = arr[i].value + arr[next].value;
                     const cellIndex = this.cells.indexOf(arr[i]);
                     arr[next].value = sum;
+                    arr[next].isNew = false;
                     [arr[i], arr[next]] = [arr[next], 0];
 
                     this.cells.splice(cellIndex, 1);
@@ -248,7 +248,7 @@ class Game extends Component {
         
         const isCellFree = newBoard[x][y] === 0;
         if (isCellFree) {
-            const val = (Math.floor(Math.random() * 4) < 3 ? 2 : 4);
+            const val = (Math.floor(Math.random() * 8) < 7 ? 2 : 4);
             const square = {
                 id: new Date().getTime() + `${x}${y}`,
                 value: val,
