@@ -15,6 +15,14 @@ class Board extends Component {
         this.onTouchEnd = this.props.onTouchEnd;
 
     }
+
+    //to prevent touch-scrolling
+    componentDidMount = () => {
+        document.querySelector('.board').addEventListener('touchmove', e => {
+            e.preventDefault()
+        }, {passive: false})
+    }
+
     render() {
         const boardModel = this.props.boardModel;
 

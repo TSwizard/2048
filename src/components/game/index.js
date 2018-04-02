@@ -38,6 +38,8 @@ class Game extends Component {
         }
 
         document.addEventListener('keydown', this.onKeyDown);
+
+        
     }
 
     onKeyDown = event => {
@@ -74,7 +76,6 @@ class Game extends Component {
     onTouchMove = (event) => {
         this.pointer.endX = event.targetTouches[0].clientX;
         this.pointer.endY = event.targetTouches[0].clientY;
-        
     }
 
     onTouchEnd = (event) => {
