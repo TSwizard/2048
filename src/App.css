@@ -198,6 +198,20 @@
   animation: merge2 .2s .1s;
 }
 
+.info-row {
+  color: #989816;
+  font-size: 22px;
+}
+
+.dif-row h3 {
+  margin: 15px 0;
+}
+
+.dif-row input {
+  display: inline-block;
+  margin-right: 5px;
+}
+
 @keyframes show {
   0% {
     transform: scale(0)

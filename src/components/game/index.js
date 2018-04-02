@@ -34,7 +34,8 @@ class Game extends Component {
                 [0, 0, 0, 0],
                 [0, 0, 0, 0],
                 [0, 0, 0, 0]
-            ]
+            ],
+            cellsPerTurn: this.cellsPerTurn
         }
 
         document.addEventListener('keydown', this.onKeyDown);
@@ -270,13 +271,46 @@ class Game extends Component {
     getFreeCells = () => 
         this.state.boardModel.reduce((prev, cur) => cur.filter(c => c === 0).length + prev, 0);
 
+    onDificultyChange = event => {
+        this.cellsPerTurn = +event.target.value;
+        this.setState({
+            cellsPerTurn: this.cellsPerTurn
+        });
+    }
+
     render() {
         const boardModel = this.state.boardModel;
         return (
             <div className="row">
+                <div className="dif-row col-sm-12">
+                    <div className="row">
+                        <h3 className="col-sm-12">Уровень сложности</h3>
+                    </div>
+                    <div className="row">
+                        <div className="col-sm-4">
+                            <label>
+                                <input type="radio" value="1" name="dificulty" checked={this.state.cellsPerTurn === 1} onChange={this.onDificultyChange}/>
+                                Легкий
+                            </label>
+                        </div>
+                        <div className="col-sm-4">
+                            <label>
+                                <input type="radio" value="2" name="dificulty" checked={this.state.cellsPerTurn === 2} onChange={this.onDificultyChange} />
+                                Средний
+                            </label>
+                        </div>
+                        <div className="col-sm-4">
+                            <label>
+                                <input type="radio" value="3" name="dificulty" checked={this.state.cellsPerTurn === 3} onChange={this.onDificultyChange} />
+                                Сложный
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="info-row col-sm-12">
                     <div className="row">
-                        <div className="col-sm-6"  onTouchMove={e => console.log(e)}>
+                        <div className="col-sm-6">
                             Score: {this.state.score}
                         </div>
                         <div className="col-sm-6">
@@ -284,6 +318,8 @@ class Game extends Component {
                         </div>
                     </div>
                 </div>
+
+                
 
                 <Board 
                     boardModel={boardModel}
