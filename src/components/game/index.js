@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import Board from '../board'
 
+
 class Game extends Component {
     cellsPerTurn = 1;//Потом для уровней сложности допилить механизм изменения;
     score = 0;
     moves = 0;
     cells = [];
+    pointer = {
+        startX: 0,
+        startY: 0,
+        endX: 0,
+        endY: 0
+    }
     constructor() {
         super();
 
@@ -56,7 +63,47 @@ class Game extends Component {
                 }
             }
         }
+    }
+
+    onTouchStart = (event) => {
+        this.pointer.startX = event.targetTouches[0].clientX;
+        this.pointer.startY = event.targetTouches[0].clientY;
         
+    }
+
+    onTouchMove = (event) => {
+        this.pointer.endX = event.targetTouches[0].clientX;
+        this.pointer.endY = event.targetTouches[0].clientY;
+        
+    }
+
+    onTouchEnd = (event) => {
+        const deltaX = this.pointer.startX - this.pointer.endX;
+        const deltaY = this.pointer.startY - this.pointer.endY;
+        const absDeltaX = Math.abs(deltaX);
+        const absDeltaY = Math.abs(deltaY);
+
+        if (absDeltaX > absDeltaY) {
+            //left or right
+            if (deltaX < 0) {
+                this.makeMove('right');
+            } else {
+                this.makeMove('left');
+            }
+        } else {
+            if (deltaY < 0) {
+                this.makeMove('down');
+            } else {
+                this.makeMove('up');
+            }
+        }
+
+        this.pointer = {
+            startX: 0,
+            startY: 0,
+            endX: 0,
+            endY: 0
+        }
     }
 
     bordClear = () => {
@@ -113,19 +160,32 @@ class Game extends Component {
             })
         });
 
-        this.moves += 1;
-        this.setState({
-            score: this.score,
-            moves: this.moves,
-            boardModel: newBoard,
-            cells: this.cells
-        })
-        .then(() => {
-            setTimeout(() => {
-                this.generateCells(this.cellsPerTurn)
-            }, 200) 
-        })
+        const boardNotChanged = this.boardsAreEqual(this.state.boardModel, newBoard);
 
+        if (boardNotChanged) {
+            this.score = this.state.score;
+        } else {
+            this.moves += 1;
+            this.setState({
+                score: this.score,
+                moves: this.moves,
+                boardModel: newBoard,
+                cells: this.cells
+            })
+            .then(() => {
+                setTimeout(() => {
+                    this.generateCells(this.cellsPerTurn)
+                }, 200) 
+            })
+        }
+
+        
+
+    }
+
+    boardsAreEqual = (prevBoard, curBoard) => {
+        const diffCount = prevBoard.reduce((prev, cur, i, arr) => cur.filter((item, j) => curBoard[i][j] !== item).length + prev, 0);
+        return diffCount === 0;
     }
 
     sort = (left,right) => {
@@ -182,13 +242,15 @@ class Game extends Component {
             [...board[2]],
             [...board[3]]
         ] 
-        let x = Math.floor(Math.random() * 4);
-        let y = Math.floor(Math.random() * 4);
+        const x = Math.floor(Math.random() * 4);
+        const y = Math.floor(Math.random() * 4);
+        
         const isCellFree = newBoard[x][y] === 0;
         if (isCellFree) {
+            const val = (Math.floor(Math.random() * 4) < 3 ? 2 : 4);
             const square = {
-                id: new Date().getTime(),
-                value: 2,
+                id: new Date().getTime() + `${x}${y}`,
+                value: val,
                 isNew: true,
                 x,
                 y
@@ -213,7 +275,7 @@ class Game extends Component {
             <div className="row">
                 <div className="info-row col-sm-12">
                     <div className="row">
-                        <div className="col-sm-6">
+                        <div className="col-sm-6"  onTouchMove={e => console.log(e)}>
                             Score: {this.state.score}
                         </div>
                         <div className="col-sm-6">
@@ -222,7 +284,13 @@ class Game extends Component {
                     </div>
                 </div>
 
-                <Board boardModel={boardModel} cells={this.state.cells} />
+                <Board 
+                    boardModel={boardModel}
+                    cells={this.state.cells}
+                    onTouchStart={this.onTouchStart}
+                    onTouchMove={this.onTouchMove}
+                    onTouchEnd={this.onTouchEnd}
+                    />
             </div>
         );
     }

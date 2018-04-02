@@ -41,26 +41,36 @@
 }
 
 .game-cell {
-  height: 100px;
+  height: 0;
   line-height: 80px;
   padding: 5px;
-  width: 60px;
+  padding-bottom: 25%;
+  position: relative;
+  width: 25%;
 }
 .game-cell::after {
   background: #cec1b5;
   border-radius: 4px;
   content: "";
   display: block;
-  height: 100%;
-  width: 100%;
+  height: auto;
+  left: 5px;
+  top: 5px;
+  bottom: 5px;
+  right: 5px;
+  position: absolute;
+  width: auto;
 }
 
 .overlay {
-  height: 100%;
-  left: 0;
-  top: 0;
+  height: auto;
+  left: 5px;
+  top: 5px;
+  right: 5px; 
+  bottom: 5px;
   position: absolute;
-  width: 100%;
+  padding: 0;
+  width: auto;
 }
 
 
@@ -68,7 +78,6 @@
   position: absolute;
   transition: all .1s linear;
   transform: scale(1);
-  width: 100px
 }
 
 .overlay .game-cell.new {
@@ -83,33 +92,33 @@
 
 
 .x1 {
-  left: 4px;
+  left: 0;
 }
 
 .x2 {
-  left: 101px;
+  left: 25%;
 }
 .x3 {
-  left: 198px;
+  left: 50%;
 }
 .x4 {
-  left: 296px;
+  left: 75%;
 }
 
 .y1 {
-  top: 5px;
+  top: 0;
 }
 
 .y2 {
-  top: 105px;
+  top: 25%;
 }
 
 .y3 {
-  top: 205px;
+  top: 50%;
 }
 
 .y4 {
-  top: 305px;
+  top: 75%;
 }
 
 

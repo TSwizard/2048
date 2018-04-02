@@ -9,13 +9,23 @@ class Board extends Component {
         this.state = {
             boardModel: this.props.boardModel
         }
+
+        this.onTouchStart = this.props.onTouchStart;
+        this.onTouchMove = this.props.onTouchMove;
+        this.onTouchEnd = this.props.onTouchEnd;
+
     }
     render() {
         const boardModel = this.props.boardModel;
 
         const cells = this.props.cells;
         return (
-            <div className="board">
+            <div 
+                className="board"
+                onTouchStart={this.onTouchStart}
+                onTouchMove={this.onTouchMove}
+                onTouchEnd={this.onTouchEnd}
+                >
                 <div className="row">
                     <div className="col-sm-3 game-cell"></div>
                     <div className="col-sm-3 game-cell"></div>
